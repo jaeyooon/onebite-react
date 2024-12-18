@@ -37,7 +37,7 @@ function App() {
       date: new Date().getTime()
     }
 
-    setTodos([newTodo, ...todos]);
+    setTodos([newTodo, ...todos]);    // 📌todos state에 새로운 투두 추가함으로서 데이터 추가가 이루어짐!
   }
 
   return (

@@ -6,7 +6,7 @@ const Editor = ({ onCreate }) => {
   const contentRef = useRef();
 
   const onChangeContent = (e) => {
-    setContent(e.target.value);
+    setContent(e.target.value);   // input 태그에 입력하는 값이 content state에 보관되도록
   };
 
   const onKeydown = (e) => {    // Enter 키 눌렀을때 추가되도록
@@ -20,7 +20,7 @@ const Editor = ({ onCreate }) => {
       contentRef.current.focus();
       return;
     }
-    onCreate(content)
+    onCreate(content)   // onCreate 함수 호출하면서 content state 에 보관된 값(input 태그에 입력된 값) 전달
     setContent("");
   };  
 
