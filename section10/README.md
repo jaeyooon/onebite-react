@@ -28,7 +28,7 @@ export default memo(Header);    // memo 메서드는 인수로 받은 Header Com
 #### 📚 useCallback - 불필요한 함수 재생성 방지  
 - 기능 구현 후 ▶ 최적화  
    
-🔗 ex. App 컴포넌트에서 `useCallback`을 통해 onCreate, onUpdate, onDelete 함수가 불필요하게 재생성되는 것을 방지하도록 함.
+🔗 ex. App 컴포넌트에서 `useCallback`을 통해 리렌더링 될 때마다 onCreate, onUpdate, onDelete 함수가 불필요하게 재생성되는 것을 방지하도록 함.
 ```javascript
 import { useCallback } from 'react';
 
