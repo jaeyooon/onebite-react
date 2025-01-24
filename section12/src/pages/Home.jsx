@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { DiaryStateContext } from "../App";
 
-import Button from "../components/button";
+import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
 
