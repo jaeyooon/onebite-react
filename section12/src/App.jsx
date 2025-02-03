@@ -1,5 +1,5 @@
 import './App.css';
-import { useReducer, useRef, createContext } from 'react';  // props drilling을 방지하기 위해 context 사용
+import { useReducer, useRef, createContext, useEffect, useState } from 'react';  // props drilling을 방지하기 위해 context 사용
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import New from './pages/New';
@@ -7,51 +7,74 @@ import Diary from './pages/Diary';
 import Notfound from './pages/Notfound';
 import Edit from './pages/Edit';
 
-const mockData = [
-  {
-    id: 1,
-    createdDate: new Date("2025-01-22").getTime(),
-    emotionId: 1,
-    content: "1번 일기 내용",
-  },
-  {
-    id: 2,
-    createdDate: new Date("2025-01-21").getTime(),
-    emotionId: 2,
-    content: "2번 일기 내용",
-  },
-    {
-    id: 3,
-    createdDate: new Date("2024-12-07").getTime(),
-    emotionId: 3,
-    content: "3번 일기 내용",
-  },
-]
-
 function reducer(state, action) {
+  let nextState;
+
   switch (action.type) {
-    case 'CREATE':
-      return [action.data, ...state];
-    case 'UPDATE':
-      return state.map((item) =>
-        String(item.id) === String(action.data.id)
-          ? action.data
-          : item
-      );
-    case 'DELETE':
-      return state.filter((item) => String(item.id) !== String(action.id)
-      );
+    case 'INIT':
+      return action.data;
+    case 'CREATE': {
+        nextState = [action.data, ...state]; 
+        break;
+      }
+    case 'UPDATE': {
+        nextState = state.map((item) =>
+          String(item.id) === String(action.data.id)
+            ? action.data
+            : item
+        );
+        break;
+      }
+    case 'DELETE': {
+        nextState = state.filter((item) => String(item.id) !== String(action.id)
+        );
+        break;
+      }
     default:
       return state;
   }
+  localStorage.setItem("diary", JSON.stringify(nextState));
+  return nextState;
 }
 
 export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, mockData);   // data state의 초기값을 mockData로 설정
-  const idRef = useRef(3);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, dispatch] = useReducer(reducer, []);   // data state의 초기값을 mockData로 설정
+  const idRef = useRef(0);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("diary");
+    if (!storedData) {
+      setIsLoading(false);
+      return;   // 강제 종료
+    }
+
+    const parsedData = JSON.parse(storedData);    // diary의 값은 객체 형태의 문자열이므로 파싱을 통해 객체로 변환시켜 줌
+    if (!Array.isArray(parsedData)) {   // parsedData가 배열이 아닐 경우에 대비한 예외 처리
+      setIsLoading(false);
+      return;
+    }
+
+    let maxId = 0;   
+    parsedData.forEach((item) => {
+      if (Number(item.id) > maxId) {
+        maxId = Number(item.id)
+      }
+    })
+
+    idRef.current = maxId + 1;    // 새로운 일기가 생성될 때 기존의 일기 id와 겹치지 않도록 +1
+
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+
+    // ✨useEffect의 dispatch 함수가 실행되어서 data state의 초기값을 설정하는 순간 loading은 끝이 남
+    setIsLoading(false);
+  }, []);    // 컴포넌트가 마운트 되었을 때만 실행되도록 deps를 빈배열로 함
 
   // 새로운 일기 추가
   const onCreate = (createdDate, emotionId, content) => {
@@ -85,6 +108,10 @@ function App() {
       type: "DELETE",
       id,
     })
+  }
+
+  if (isLoading) {  // ✨ App 컴포넌트의 일기 데이터인 data state의 초기값이 설정되기 이전까지는 isLoading state에 의해서 페이지 컴포넌트들은 렌더링되지 않고
+    return <div>데이터 로딩중입니다 ...</div>;    // 로딩중이라고 떠서 오류가 발생하지 않을 것!
   }
 
   return (

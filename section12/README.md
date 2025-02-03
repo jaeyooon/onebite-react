@@ -41,3 +41,30 @@
 #### 📒 폰트, 이미지 설정
 - 이미지 최적화 : 한번 불러온 이미지들을 다시 불러오지 않도록 브라우저의 캐쉬를 이용해서 이미지를 최적화하기 위해서는 이미지를 `public` 폴더가 아닌 `src/assets` 폴더에 보관한 다음에 코드상에서 import문을 통해서 불러와야 됨!(**소수의 이미지**를 사용하는 경우)  
 > 🚨 이미지가 굉장히 많이 필요한 상황에서는 브라우저 메모리 용량에 과부하가 올 수 있기 때문에 `public` 폴더에 보관하는게 좋을 수 있음.
+
+#### 📗 웹 스토리지(Web Storage)  
+: 데이터를 브라우저에 보관하는 방법, 일종의 데이터 베이스  
+> 💡 웹 브라우저 내장 DB **Web Storage**  
+> - 웹 브라우저에 기본적으로 내장되어 있는 데이터베이스로 별도의 프로그램 설치 필요X, 라이브러리 설치 필요X  
+> - 그냥 자바스크립트 내장함수 만으로 접근 가능  
+>   - 값을 저장 : localStorage.setItem(key, value)  
+>   - 값을 꺼냄 : localStorage.getItem(key)  
+
+- SessionStorage 와 LocalStorage가 있음.  
+  - SessionStorage : 브라우저 탭 별로 데이터를 보관   
+    - 탭이 종료되기 전에는 데이터 유지(새로고침),  
+    - 탭이 종료되거나 꺼지면 데이터 삭제  
+  - LocalStorage : 사이트 주소별로 데이터 보관  
+    - 사용자가 직접 삭제하기 전까지 데이터 보관  
+
+```javascript
+localStorage.setItem("test", 'hello');
+localStorage.setItem("person", JSON.stringify({ name: "조재윤" }));   // JSON.stringify는 인수로 전달된 객체를 문자열로 변환시켜줌
+
+console.log(localStorage.getItem("test"));
+console.log(JSON.parse(localStorage.getItem("person")));    // JSON.parse는 인수로 전달한 객체 형태의 문자열을 파싱해서 객체로 다시 변환시킴
+📌 JSON.parse는 인수로 전달한 값이 undefined이거나 null일때 오류가 발생하므로
+---반드시 localStorage로부터 꺼내온 값이 undefined이 아닐 경우에만 JSON.parse의 인수로 전달하도록 주의해야 함!
+
+localStorage.removeItem("test");
+```
