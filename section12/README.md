@@ -70,4 +70,6 @@ localStorage.removeItem("test");
 ```  
 
 #### 📘 배포하기(Deploy)  
-- Vercel : 프론트엔드 개발자를 위한 클라우드 서비스, React.js의 확장판 개념인 Next.js를 개발하는 회사
+- Vercel : 프론트엔드 개발자를 위한 클라우드 서비스, React.js의 확장판 개념인 Next.js를 개발하는 회사  
+- Vercel 이용하여 감정 일기장 배포  
+  👉 https://emotion-diary-woad-two.vercel.app
