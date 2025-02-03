@@ -67,4 +67,7 @@ console.log(JSON.parse(localStorage.getItem("person")));    // JSON.parse는 인
 ---반드시 localStorage로부터 꺼내온 값이 undefined이 아닐 경우에만 JSON.parse의 인수로 전달하도록 주의해야 함!
 
 localStorage.removeItem("test");
-```
+```  
+
+#### 📘 배포하기(Deploy)  
+- Vercel : 프론트엔드 개발자를 위한 클라우드 서비스, React.js의 확장판 개념인 Next.js를 개발하는 회사

@@ -5,6 +5,7 @@ import Editor from "../components/Editor";
 import { useContext, useEffect, useState } from "react";
 import { DiaryDispatchContext, DiaryStateContext } from "../App";
 import useDiary from "../hooks/useDiary";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Edit = () => {
   const params = useParams();
@@ -12,6 +13,8 @@ const Edit = () => {
   const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
 
   const curDiaryItem = useDiary(params.id);   // 커스텀 훅을 통해 id에 해당하는 일기 데이터를 가져옴.
+
+  usePageTitle(`${params.id}번 일기 수정`);
 
   const onClickDelete = () => {
     if(

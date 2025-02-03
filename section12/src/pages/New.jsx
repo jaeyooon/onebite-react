@@ -2,12 +2,15 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import Editor from "../components/Editor";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DiaryDispatchContext } from "../App";
+import usePageTitle from "../hooks/usePageTitle";
 
 const New = () => {
   const { onCreate } = useContext(DiaryDispatchContext);  // DiaryDispatchContext로부터 App 컴포넌트에서 새로운 일기를 생성하는 함수인 onCreate를 공급받음
   const nav = useNavigate();
+
+  usePageTitle("새 일기 쓰기");
 
   const onSubmit = (input) => {
     onCreate(

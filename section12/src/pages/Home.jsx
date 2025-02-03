@@ -4,6 +4,7 @@ import { DiaryStateContext } from "../App";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
+import usePageTitle from "../hooks/usePageTitle";
 
 // ✨로직이 복잡하고 해당함수가 매개변수만으로도 필요한 데이터를 다 제공받을 수 있으며 불필요한 함수의 재생성을 방지하기 위해 컴포넌트 외부에 함수 선언
 const getMonthlyData = (pivotDate, data) => {
@@ -32,9 +33,10 @@ const getMonthlyData = (pivotDate, data) => {
 };
 
 const Home = () => {
+  usePageTitle("감정 일기장");
   const data = useContext(DiaryStateContext);   // context가 공급하는 일기 데이터를 data라는 이름으로 받아옴.
   const [pivotDate, setPivotDate] = useState(new Date());
-
+  
   const monthlyData = getMonthlyData(pivotDate, data);    // 컴포넌트가 리렌더링 될 때마다 호출
 
   const onIncreaseMonth = () => {
